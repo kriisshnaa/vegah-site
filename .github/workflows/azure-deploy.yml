@@ -1,49 +1,43 @@
-name: Deploy to Azure App Service
+name: build-and-deploy
 
 on:
   push:
-    branches: [ main ]
-
-env:
-  AZURE_WEBAPP_NAME: vegah-site
-  NODE_VERSION: '20.x'
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build the application
-      run: npm run build
+      - name: Build the application
+        run: npm run build
 
-    - name: Prepare deployment package
-      run: |
-        mkdir deploy
-        cp -r .next deploy/
-        cp -r public deploy/
-        cp -r package.json deploy/
-        cp -r package-lock.json deploy/
-        cp -r next.config.js deploy/ || true
-        cp -r next.config.ts deploy/ || true
+      - name: Prepare deployment package
+        run: |
+          mkdir -p deploy
+          cp -r .next deploy/.next
+          cp -r public deploy/public
+          cp package.json deploy/
+          cp package-lock.json deploy/
+          cp next.config.js deploy/ || true
+          cp -r node_modules deploy/node_modules
 
-    - name: Zip artifact for deployment
-      run: cd deploy && zip -r ../release.zip .
-
-    - name: Deploy to Azure App Service
-      uses: azure/webapps-deploy@v3
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: release.zip
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: vegah-site  # 🔹 change to your Azure Web App name
+          slot-name: production
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: deploy
