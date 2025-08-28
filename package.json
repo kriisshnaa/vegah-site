@@ -13,13 +13,13 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.0",
     "next": "15.5.2",
-<<<<<<< HEAD
+
     "react": "18.3.1",
     "react-dom": "18.3.1",
-=======
+
     "react": "18.3.1",
     "react-dom": "18.3.1",
->>>>>>> bc42d4c17570fe654d5d6fe57d884ea06bfb830f
+
     "react-hook-form": "^7.62.0",
     "react-hot-toast": "^2.6.0"
   },
