@@ -40,10 +40,11 @@ jobs:
         cp -r .next deploy/
         cp -r package.json deploy/
         cp -r package-lock.json deploy/
-        cp -r next.config.js deploy/
+        cp -r next.config.ts deploy/
         cp -r tsconfig.json deploy/
         cp -r src deploy/
         cp -r public deploy/
+        cp -r node_modules deploy/
 
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v3
