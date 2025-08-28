@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  AZURE_WEBAPP_NAME: vegah-site #dead
+  AZURE_WEBAPP_NAME: vegah-site
   AZURE_WEBAPP_PACKAGE_PATH: 'deploy'
   NODE_VERSION: '20.x'
 
@@ -44,6 +44,11 @@ jobs:
         cp -r tsconfig.json deploy/
         cp -r src deploy/
         cp -r public deploy/
+
+    - name: Install production dependencies
+      run: |
+        cd deploy
+        npm ci --only=production
 
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v3
