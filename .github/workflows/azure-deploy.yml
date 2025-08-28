@@ -27,12 +27,19 @@ jobs:
 
     - name: Build the application
       run: npm run build
-      env:
-        MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    - name: Prepare deployment package
+      run: |
+        mkdir deploy
+        cp -r .next deploy/
+        cp -r public deploy/
+        cp -r package.json deploy/
+        cp -r package-lock.json deploy/
+        cp -r next.config.js deploy/ || true
+        cp -r next.config.ts deploy/ || true
 
     - name: Zip artifact for deployment
-      run: zip -r release.zip . -x '*.git*'
+      run: cd deploy && zip -r ../release.zip .
 
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v3
