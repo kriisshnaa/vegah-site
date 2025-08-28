@@ -44,11 +44,7 @@ jobs:
         cp -r tsconfig.json deploy/
         cp -r src deploy/
         cp -r public deploy/
-
-    - name: Install production dependencies
-      run: |
-        cd deploy
-        npm ci --only=production
+        cp -r node_modules deploy/
 
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v3
