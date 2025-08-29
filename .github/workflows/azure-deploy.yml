@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 env:
-  AZURE_WEBAPP_NAME: vegah-site
+  AZURE_WEBAPP_NAME: vegah-site #site
   NODE_VERSION: '20.x'
 
 jobs:
